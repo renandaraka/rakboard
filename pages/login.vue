@@ -55,14 +55,14 @@ const loading = ref(false);
 const errorMessage = ref('');
 
 const supabase = useSupabaseClient();
-const router = useRouter();
 const user = useSupabaseUser();
 
 // Pengamat ini akan secara otomatis mengarahkan pengguna ke dashboard
 // setelah mereka berhasil login dan data pengguna tersedia.
+// Menggunakan navigateTo() yang aman untuk SSR (Server-Side Rendering).
 watch(user, (currentUser) => {
   if (currentUser) {
-    router.push('/dashboard');
+    return navigateTo('/dashboard');
   }
 }, { immediate: true });
 
