@@ -94,6 +94,14 @@
 
 <script setup>
 import { ref } from 'vue';
+
+useHead({
+  title: 'Rakboard',
+  meta: [
+    { name: 'description', content: 'Rak Personal Site' }
+  ]
+})
+
 const supabase = useSupabaseClient();
 const router = useRouter();
 const isFinanceOpen = ref(true);
