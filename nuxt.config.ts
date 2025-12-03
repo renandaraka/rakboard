@@ -1,6 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  app: {
+    head: {
+      link: [
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap' }
+      ]
+    }
+  },
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
     postcss: {
@@ -9,4 +17,23 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  modules: [
+    '@nuxtjs/supabase',
+    '@pinia/nuxt',
+  ],
+  build: {
+    transpile: ['vue-chartjs', 'chart.js'],
+  },
+  supabase: {
+    redirect: false
+  },
+
+  // Tambahkan konfigurasi ini untuk memperbaiki masalah Mixed Content (HTTPS/WSS)
+  vite: {
+    server: {
+      hmr: {
+        protocol: 'wss'
+      }
+    }
+  }
 })
