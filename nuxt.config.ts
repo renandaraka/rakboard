@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
-    postcss: {
+  postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
@@ -25,6 +25,9 @@ export default defineNuxtConfig({
     transpile: ['vue-chartjs', 'chart.js'],
   },
   supabase: {
+    // Konfigurasi Eksplisit untuk memastikan variabel terbaca di Vercel
+    url: process.env.SUPABASE_URL,
+    key: process.env.SUPABASE_KEY,
     redirect: false
   },
 

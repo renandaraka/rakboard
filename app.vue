@@ -103,7 +103,6 @@ useHead({
 })
 
 const supabase = useSupabaseClient();
-const router = useRouter();
 const isFinanceOpen = ref(true);
 const isProductiveOpen = ref(true);
 
@@ -114,7 +113,8 @@ const handleLogout = async () => {
     return;
   }
   // Redirect to the login page after successful logout
-  await router.push('/login');
+  // Using navigateTo for SSR safety
+  await navigateTo('/login');
 };
 </script>
 
