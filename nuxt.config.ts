@@ -24,10 +24,19 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vue-chartjs', 'chart.js'],
   },
+
+  // Menggunakan runtimeConfig untuk eksposur environment variable yang aman
+  runtimeConfig: {
+    public: {
+      supabase: {
+        url: process.env.NUXT_PUBLIC_SUPABASE_URL,
+        key: process.env.NUXT_PUBLIC_SUPABASE_KEY
+      }
+    }
+  },
+
   supabase: {
-    // Konfigurasi Eksplisit untuk memastikan variabel terbaca di Vercel
-    url: process.env.NUXT_PUBLIC_SUPABASE_URL,
-    key: process.env.NUXT_PUBLIC_SUPABASE_KEY,
+    // Modul akan mengambil konfigurasi dari runtimeConfig secara otomatis
     redirect: false
   },
 
