@@ -22,7 +22,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
   ],
   build: {
-    transpile: ['vue-chartjs', 'chart.js'],
+    transpile: ['vue-chartjs', 'chart.js', '@nuxtjs/supabase'],
   },
 
   // Menggunakan runtimeConfig untuk eksposur environment variable yang aman
