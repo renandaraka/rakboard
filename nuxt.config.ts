@@ -25,18 +25,8 @@ export default defineNuxtConfig({
     transpile: ['vue-chartjs', 'chart.js', '@nuxtjs/supabase'],
   },
 
-  // Menggunakan runtimeConfig untuk eksposur environment variable yang aman
-  runtimeConfig: {
-    public: {
-      supabase: {
-        url: process.env.NUXT_PUBLIC_SUPABASE_URL || '',
-        key: process.env.NUXT_PUBLIC_SUPABASE_KEY || ''
-      }
-    }
-  },
-
+  // Supabase module options
   supabase: {
-    // Modul akan mengambil konfigurasi dari runtimeConfig secara otomatis
     redirect: false
   },
 
