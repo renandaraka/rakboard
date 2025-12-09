@@ -66,37 +66,51 @@ watch(user, (currentUser) => {
   }
 }, { immediate: true });
 
-// Fungsi login/signup cerdas
+// Fungsi login/signup cerdas - Coba login dulu, baru signup
 const handleSmartLogin = async () => {
   loading.value = true;
   errorMessage.value = '';
 
   try {
-    // 1. Coba daftarkan pengguna baru (sign up)
-    const { error: signUpError } = await supabase.auth.signUp({
+    // 1. Coba login dulu (lebih umum user sudah punya akun)
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email: email.value,
       password: password.value,
     });
 
-    // Jika error karena user sudah terdaftar, coba login
-    if (signUpError && signUpError.message.includes('already registered')) {
-      console.log('User exists, attempting to sign in...');
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: email.value,
-        password: password.value,
-      });
-
-      // Jika login juga gagal (misal: password salah), tampilkan error
-      if (signInError) throw signInError;
-      
-    } else if (signUpError) {
-      // Jika ada error lain saat sign up, tampilkan
-      throw signUpError;
+    // Jika login berhasil, selesai
+    if (signInData.user) {
+      console.log('Login successful');
+      return;
     }
-    
-    // Jika berhasil, kita tidak perlu redirect di sini.
-    // Pengamat (watch) di atas akan menanganinya secara otomatis.
-    console.log('Login/Signup process initiated...');
+
+    // 2. Jika login gagal karena user tidak ada, coba daftar
+    if (signInError) {
+      // Cek apakah error karena invalid credentials (user belum ada atau password salah)
+      if (signInError.message.toLowerCase().includes('invalid') || 
+          signInError.message.toLowerCase().includes('not found')) {
+        
+        console.log('User not found, attempting to sign up...');
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+          email: email.value,
+          password: password.value,
+        });
+
+        if (signUpError) throw signUpError;
+        
+        // Cek apakah perlu email confirmation
+        if (signUpData.user && !signUpData.session) {
+          errorMessage.value = 'Akun berhasil dibuat! Silakan cek email Anda untuk konfirmasi.';
+          return;
+        }
+        
+        console.log('Signup successful');
+        return;
+      }
+      
+      // Jika error lain (misal: password salah untuk user yang sudah ada)
+      throw signInError;
+    }
 
   } catch (error) {
     console.error('Authentication error:', error);

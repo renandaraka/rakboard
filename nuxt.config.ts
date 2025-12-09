@@ -27,7 +27,9 @@ export default defineNuxtConfig({
 
   // Supabase module options
   supabase: {
-    redirect: false
+    redirect: false,
+    url: process.env.NUXT_PUBLIC_SUPABASE_URL,
+    key: process.env.NUXT_PUBLIC_SUPABASE_KEY
   },
 
   // Tambahkan konfigurasi ini untuk memperbaiki masalah Mixed Content (HTTPS/WSS)
